@@ -172,6 +172,8 @@ void readDataFromFile() {
 
 
 void getDataFromFile() {
+	// this function used to check if we can or can't take information from file
+	// and to call reading function
 	openFile(CSV_FILE, "r");
 
 	if (fileStatus == FILE_OPENED) {
@@ -256,6 +258,8 @@ void writeDataToFile() {
 }
 
 void saveDataToFile() {
+	// this function used to check that we can upload new information to file 
+	// and call uploading function
 	openFile(CSV_FILE, "w");
 
 	if (fileStatus == FILE_OPENED) {
@@ -274,34 +278,35 @@ void saveDataToFile() {
 	return;
 }
 
-void merge_sort_sales(short l, short r) {
-	if (r - l < 2) {
-		if (r - l == 1) {
-			if (salesStatistics[r] > salesStatistics[l]) {
+void merge_sort_sales(short leftPointer, short rightPointer) {
+	// this function used to sort sales information
+	if (rightPointer - leftPointer < 2) {
+		if (rightPointer - leftPointer == 1) {
+			if (salesStatistics[rightPointer] > salesStatistics[leftPointer]) {
 				int x;
-				x = salesStatistics[r];
-				salesStatistics[r] = salesStatistics[l];
-				salesStatistics[l] = x;
-				x = index[r];
-				index[r] = index[l];
-				index[l] = x;
+				x = salesStatistics[rightPointer];
+				salesStatistics[rightPointer] = salesStatistics[leftPointer];
+				salesStatistics[leftPointer] = x;
+				x = index[rightPointer];
+				index[rightPointer] = index[leftPointer];
+				index[leftPointer] = x;
 				//swap(salesStatistics[r],salesStatistics[l]);
 			}
 		}
 		return;
 	}
-	int mid = (r + l) / 2;
-	int nl = l, nr = mid + 1, cnt = 0;
-	merge_sort_sales(l, mid);
-	merge_sort_sales(mid + 1, r);
-	for (int i = 1; i <= (r - l + 1); i++) {
-		if (nr == r + 1) {
+	int midPointer = (rightPointer + leftPointer) / 2;
+	int nl = leftPointer, nr = midPointer + 1, cnt = 0;
+	merge_sort_sales(leftPointer, midPointer);
+	merge_sort_sales(midPointer + 1, rightPointer);
+	for (int i = 1; i <= (rightPointer - leftPointer + 1); i++) {
+		if (nr == rightPointer + 1) {
 			b[cnt] = salesStatistics[nl];
 			sortIndex[cnt] = index[nl];
 			cnt++;
 			nl++;
 		}
-		else if (nl == mid + 1) {
+		else if (nl == midPointer + 1) {
 			b[cnt] = salesStatistics[nr];
 			sortIndex[cnt] = index[nr];
 			cnt++;
@@ -322,9 +327,9 @@ void merge_sort_sales(short l, short r) {
 			}
 		}
 	}
-	for (int i = 0; i < (r - l + 1); ++i) {
-		salesStatistics[l + i] = b[i];
-		index[l + i] = sortIndex[i];
+	for (int i = 0; i < (rightPointer - leftPointer + 1); ++i) {
+		salesStatistics[leftPointer + i] = b[i];
+		index[leftPointer + i] = sortIndex[i];
 	}
 	return;
 }
