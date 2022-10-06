@@ -296,34 +296,34 @@ void merge_sort_sales(short leftPointer, short rightPointer) {
 		return;
 	}
 	int midPointer = (rightPointer + leftPointer) / 2;
-	int nl = leftPointer, nr = midPointer + 1, cnt = 0;
+	int newLeftPointer = leftPointer, newRightPointer = midPointer + 1, cnt = 0;
 	merge_sort_sales(leftPointer, midPointer);
 	merge_sort_sales(midPointer + 1, rightPointer);
 	for (int i = 1; i <= (rightPointer - leftPointer + 1); i++) {
-		if (nr == rightPointer + 1) {
-			b[cnt] = salesStatistics[nl];
-			sortIndex[cnt] = index[nl];
+		if (newRightPointer == rightPointer + 1) {
+			b[cnt] = salesStatistics[newLeftPointer];
+			sortIndex[cnt] = index[newLeftPointer];
 			cnt++;
-			nl++;
+			newLeftPointer++;
 		}
-		else if (nl == midPointer + 1) {
-			b[cnt] = salesStatistics[nr];
-			sortIndex[cnt] = index[nr];
+		else if (newLeftPointer == midPointer + 1) {
+			b[cnt] = salesStatistics[newRightPointer];
+			sortIndex[cnt] = index[newRightPointer];
 			cnt++;
-			nr++;
+			newRightPointer++;
 		}
 		else {
-			if (salesStatistics[nl] > salesStatistics[nr]) {
-				b[cnt] = salesStatistics[nl];
-				sortIndex[cnt] = index[nl];
+			if (salesStatistics[newLeftPointer] > salesStatistics[newRightPointer]) {
+				b[cnt] = salesStatistics[newLeftPointer];
+				sortIndex[cnt] = index[newLeftPointer];
 				cnt++;
-				nl++;
+				newLeftPointer++;
 			}
 			else {
-				b[cnt] = salesStatistics[nr];
-				sortIndex[cnt] = index[nr];
+				b[cnt] = salesStatistics[newRightPointer];
+				sortIndex[cnt] = index[newRightPointer];
 				cnt++;
-				nr++;
+				newRightPointer++;
 			}
 		}
 	}
@@ -334,64 +334,69 @@ void merge_sort_sales(short leftPointer, short rightPointer) {
 	return;
 }
 
-void merge_sort_cars(short l, short r) {
-	if (r - l < 2) {
-		if (r - l == 1) {
-			if (carHere[r] > carHere[l]) {
+void merge_sort_cars(short leftPointer, short rightPointer) {
+
+	// this fucntion is used to sort information about cars
+
+	if (rightPointer - leftPointer < 2) {
+		if (rightPointer - leftPointer == 1) {
+			if (carHere[rightPointer] > carHere[leftPointer]) {
 				//printf("%hd %hd %hd %hd ^^^\n", carHere[r], carHere[l], carIndex[r], carIndex[l]);
 				int x;
-				x = carHere[r];
-				carHere[r] = carHere[l];
-				carHere[l] = x;
-				x = carIndex[r];
-				carIndex[r] = carIndex[l];
-				carIndex[l] = x;
+				x = carHere[rightPointer];
+				carHere[rightPointer] = carHere[leftPointer];
+				carHere[leftPointer] = x;
+				x = carIndex[rightPointer];
+				carIndex[rightPointer] = carIndex[leftPointer];
+				carIndex[leftPointer] = x;
 				//printf("%hd %hd %hd %hd &&&\n", carHere[r], carHere[l], carIndex[r], carIndex[l]);
 				//swap(carHere[r],carHere[l]);
 			}
 		}
 		return;
 	}
-	int mid = (r + l) / 2;
-	int nl = l, nr = mid + 1, cnt = 0;
-	merge_sort_cars(l, mid);
-	merge_sort_cars(mid + 1, r);
-	for (int i = 0; i < (r - l + 1); i++) {
-		if (nr == r + 1) {
-			b[cnt] = carHere[nl];
-			sortCarIndex[cnt] = carIndex[nl];
+	int midPointer = (rightPointer + leftPointer) / 2;
+	int newleftPointer = leftPointer, newrightPointer = midPointer + 1, cnt = 0;
+	merge_sort_cars(leftPointer, midPointer);
+	merge_sort_cars(midPointer + 1, rightPointer);
+	for (int i = 0; i < (rightPointer - leftPointer + 1); i++) {
+		if (newrightPointer == rightPointer + 1) {
+			b[cnt] = carHere[newleftPointer];
+			sortCarIndex[cnt] = carIndex[newleftPointer];
 			cnt++;
-			nl++;
+			newleftPointer++;
 		}
-		else if (nl == mid + 1) {
-			b[cnt] = carHere[nr];
-			sortCarIndex[cnt] = carIndex[nr];
+		else if (newleftPointer == midPointer + 1) {
+			b[cnt] = carHere[newrightPointer];
+			sortCarIndex[cnt] = carIndex[newrightPointer];
 			cnt++;
-			nr++;
+			newrightPointer++;
 		}
 		else {
-			if (carHere[nl] > carHere[nr]) {
-				b[cnt] = carHere[nl];
-				sortCarIndex[cnt] = carIndex[nl];
-				nl++;
+			if (carHere[newleftPointer] > carHere[newrightPointer]) {
+				b[cnt] = carHere[newleftPointer];
+				sortCarIndex[cnt] = carIndex[newleftPointer];
+				newleftPointer++;
 				cnt++;
 			}
 			else {
-				b[cnt] = carHere[nr];
-				sortCarIndex[cnt] = carIndex[nr];
+				b[cnt] = carHere[newrightPointer];
+				sortCarIndex[cnt] = carIndex[newrightPointer];
 				cnt++;
-				nr++;
+				newrightPointer++;
 			}
 		}
 	}
-	for (int i = 0; i < (r - l + 1); ++i) {
-		carHere[l + i] = b[i];
-		carIndex[l + i] = sortCarIndex[i];
+	for (int i = 0; i < (rightPointer - leftPointer + 1); ++i) {
+		carHere[leftPointer + i] = b[i];
+		carIndex[leftPointer + i] = sortCarIndex[i];
 	}
 	return;
 }
 
 void greet_user_and_print_menu() {
+	// First thing that user see, used to explain everything
+
 	printf("Welcome, to our Car buying program.\n\nMenu:\na.Buy a car\nb.Look for sales statistics\nc.Exit\n");
 
 	scanf("\n %c", &userAnswer);
@@ -405,6 +410,8 @@ void greet_user_and_print_menu() {
 }
 
 void print_cars() {
+	// funtion for giving user information about cars that are in stock
+
 	printf("We have 7 types of cars that you can buy. Now, I'll give you a menu and time to choose a car\n");
 
 	for (int i = 0; i < CAR_IN_STOCK; i += 1) {
@@ -428,15 +435,19 @@ void print_cars() {
 			}
 		}
 	}
+
 	printf("Also, I wanted to ask, how old are you? If you apply for our social program you can get a discount\n");
 	scanf("\n %hd", &customerAge);
 
 	printf("And what is your name?\n");
 	scanf("\n %[^\n]s", &userName[numberOfSales]);
+
 	return;
 }
 
 void buying_process() {
+	// funstion for gettin user replies and checking if everything alright
+
 	printf("\nWhen you will choose please give me the number of car that you want to buy from the menu above:");
 	scanf("\n %hd", &numberOfCar);
 
@@ -476,6 +487,8 @@ void buying_process() {
 }
 
 void print_statistics() {
+	// function for giving user statistics
+
 	printf("%hd Car saled for %d %c.\n", carSaled, totalSales, poundSign);
 	printf("Want to get more information?\nPrint a if you want to or b If not\n");
 	scanf("\n %c", &userAnswer);
@@ -493,6 +506,8 @@ void print_statistics() {
 }
 
 void print_discount_applying() {
+	// function for checking if there's a dicsount user can use
+
 	if (customerAge >= 25 && customerAge <= 60) {
 		printf("Sorry, You're not applaying for our social program\n");
 	}
@@ -503,6 +518,9 @@ void print_discount_applying() {
 }
 
 void sales_update() {
+	// function that check if we need to do updates in data
+	// if we need to then call function for update
+
 	if (isNewSales == 1) {
 		merge_sort_sales(0, numberOfSales - 1);
 		merge_sort_cars(0, CAR_IN_STOCK - 1);
